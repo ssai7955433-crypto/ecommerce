@@ -18,8 +18,8 @@ app.use(helmet());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://6aad8d8e0d26a5708cd4a38f--orbikart.netlify.app",
-];
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 
 app.use(
   cors({

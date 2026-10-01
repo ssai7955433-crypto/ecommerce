@@ -11,7 +11,7 @@ const OrderSuccess = () => {
         </h1>
 
         <p className="mt-4 text-gray-600">
-          Thank you for your purchase.
+          Your order was sent to the store. The store will contact you to arrange payment and delivery.
         </p>
 
         <Link

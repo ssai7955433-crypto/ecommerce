@@ -1,30 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { ShieldCheckIcon } from "@heroicons/react/24/outline";
-
 import api from "../../services/api";
 import { clearCart } from "../../redux/cartSlice";
 import CustomerHeader from "./CustomerHeader";
-
-// LOAD RAZORPAY SCRIPT
-const loadRazorpay = () => {
-  return new Promise((resolve) => {
-    if (window.Razorpay) {
-      resolve(true);
-      return;
-    }
-
-    const script = document.createElement("script");
-
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-
-    document.body.appendChild(script);
-  });
-};
 
 const emptyForm = {
   name: "",
@@ -333,119 +312,8 @@ const CheckoutPage = () => {
         shippingAddress: form,
       });
 
-      const createdOrder = response.data.order;
-
-      /*
-       * LOAD RAZORPAY
-       */
-
-      const loaded = await loadRazorpay();
-
-      if (!loaded) {
-        alert(
-          "Unable to load Razorpay. Please check your internet connection and try again."
-        );
-
-        setLoading(false);
-        return;
-      }
-
-      /*
-       * CREATE RAZORPAY ORDER
-       */
-
-      const razorpayResponse = await api.post(
-        "/orders/payment/create",
-        {
-          orderId: createdOrder._id,
-        }
-      );
-
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-
-        amount: razorpayResponse.data.amount,
-
-        currency: razorpayResponse.data.currency,
-
-        name: "Preethi's Fashion",
-
-        description: "E-Commerce Purchase",
-
-        order_id:
-          razorpayResponse.data.razorpayOrderId,
-
-        handler: async function (paymentResponse) {
-          try {
-            await api.post(
-              "/orders/payment/verify",
-              {
-                razorpay_order_id:
-                  paymentResponse.razorpay_order_id,
-
-                razorpay_payment_id:
-                  paymentResponse.razorpay_payment_id,
-
-                razorpay_signature:
-                  paymentResponse.razorpay_signature,
-              }
-            );
-
-            dispatch(clearCart());
-
-            navigate("/order-success");
-          } catch (error) {
-            console.error(
-              "Payment verification error:",
-              error
-            );
-
-            alert(
-              error.response?.data?.message ||
-                "Payment verification failed. Please contact support if money was deducted."
-            );
-          } finally {
-            setLoading(false);
-          }
-        },
-
-        prefill: {
-          name: form.name,
-          contact: form.phone,
-        },
-
-        theme: {
-          color: "#0d9488",
-        },
-
-        modal: {
-          ondismiss: function () {
-            setLoading(false);
-          },
-        },
-      };
-
-      const razorpay =
-        new window.Razorpay(options);
-
-      razorpay.on(
-        "payment.failed",
-        function (response) {
-          console.error(
-            "Razorpay payment failed:",
-            response
-          );
-
-          alert(
-            response.error?.description ||
-              "Payment failed. Please try again."
-          );
-
-          setLoading(false);
-        }
-      );
-
-      razorpay.open();
+      dispatch(clearCart());
+      navigate("/order-success");
     } catch (error) {
       console.error(
         "Checkout error:",
@@ -934,25 +802,13 @@ const CheckoutPage = () => {
 
               </section>
 
-              {/* SECURITY */}
-
-              <section className="flex items-start gap-4 rounded-3xl border border-white/80 bg-white/75 p-5 shadow-md shadow-slate-200/30">
-
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 text-emerald-600">
-                  <ShieldCheckIcon className="h-6 w-6" />
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">
-                    Secure Payment
-                  </h3>
-
-                  <p className="mt-1 text-xs leading-5 text-slate-500">
-                    Your payment is securely processed through Razorpay.
-                    We never store your card or payment details.
-                  </p>
-                </div>
-
+              <section className="rounded-3xl border border-white/80 bg-white/75 p-5 shadow-md shadow-slate-200/30">
+                <h3 className="text-sm font-bold text-slate-900">
+                  Payment arranged with the store
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  Online payment is unavailable. The store will contact you to arrange payment.
+                </p>
               </section>
 
             </div>
@@ -1064,12 +920,11 @@ const CheckoutPage = () => {
                   >
                     {loading
                       ? "Processing..."
-                      : "Continue to Payment →"}
+                      : "Place Order"}
                   </button>
 
                   <p className="mt-4 text-center text-[11px] leading-5 text-slate-400">
-                    By continuing, you agree to proceed with
-                    the purchase and payment.
+                    Your order will be sent to the store for confirmation.
                   </p>
 
                 </div>

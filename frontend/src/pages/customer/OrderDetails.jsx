@@ -487,20 +487,6 @@ const OrderDetails = () => {
 
               </div>
 
-              {order.razorpayPaymentId && (
-                <div className="mt-5 border-t border-slate-100 pt-4">
-
-                  <p className="text-xs text-slate-400">
-                    Razorpay Payment ID
-                  </p>
-
-                  <p className="mt-1 break-all font-mono text-xs text-slate-600">
-                    {order.razorpayPaymentId}
-                  </p>
-
-                </div>
-              )}
-
             </div>
 
             {/* Shipping */}

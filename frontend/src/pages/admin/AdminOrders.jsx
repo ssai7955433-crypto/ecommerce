@@ -200,20 +200,12 @@ const AdminOrders = () => {
       const orderId =
         order._id?.toLowerCase() || "";
 
-      const razorpayOrderId =
-        order.razorpayOrderId?.toLowerCase() || "";
-
-      const razorpayPaymentId =
-        order.razorpayPaymentId?.toLowerCase() || "";
-
       const matchesSearch =
         !query ||
         customerName.includes(query) ||
         customerEmail.includes(query) ||
         storeName.includes(query) ||
-        orderId.includes(query) ||
-        razorpayOrderId.includes(query) ||
-        razorpayPaymentId.includes(query);
+        orderId.includes(query);
 
       const matchesStatus =
         statusFilter === "ALL" ||
@@ -342,7 +334,7 @@ const AdminOrders = () => {
                 onChange={(e) =>
                   setSearch(e.target.value)
                 }
-                placeholder="Search by customer, store, order ID or Razorpay ID..."
+                placeholder="Search by customer, store or order ID..."
                 className="w-full rounded-2xl border border-slate-200 bg-white/75 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
               />
 

@@ -570,29 +570,6 @@ const AdminOrderDetails = () => {
                 </div>
 
 
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Razorpay Order ID
-                  </p>
-
-                  <p className="mt-1 break-all font-mono text-xs text-slate-600">
-                    {order.razorpayOrderId ||
-                      "Not available"}
-                  </p>
-                </div>
-
-
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Razorpay Payment ID
-                  </p>
-
-                  <p className="mt-1 break-all font-mono text-xs text-slate-600">
-                    {order.razorpayPaymentId ||
-                      "Not available"}
-                  </p>
-                </div>
-
               </div>
 
             </InfoCard>
