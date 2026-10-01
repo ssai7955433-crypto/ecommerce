@@ -1,15 +1,22 @@
-# Ecommerce Backend
+# ShaliniKart E-Commerce
 
-This repository currently contains a standalone Express health-check backend.
-Database-backed ecommerce features are disabled.
+- Frontend: https://shalinikart.netlify.app
+- Backend: https://shalini-kart.onrender.com
 
-## Run locally
+The backend provides the multi-tenant store, product, account, and order APIs.
+MongoDB stores application data. Online payment is not configured; orders are
+placed for the store to confirm and arrange payment.
 
-From `backend/`, run `npm install` and then `npm start`.
+## Deploy the backend on Render
 
-The health endpoint is `GET /api/health` and returns a JSON status message.
+- Root directory: `backend`
+- Build command: `npm install`
+- Start command: `npm start`
 
-## Deploy on Render
+Set these environment variables in Render:
 
-Create a Web Service from this repository with root directory `backend`, build
-command `npm install`, and start command `npm start`. Render supplies `PORT`.
+- `MONGO_URI`: MongoDB Atlas connection string
+- `JWT_SECRET`: a private random signing secret
+- `FRONTEND_URL`: `https://shalinikart.netlify.app`
+
+The health endpoint is `GET /api/health`.
