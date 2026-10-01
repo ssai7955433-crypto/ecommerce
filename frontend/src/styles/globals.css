@@ -1,0 +1,2 @@
+/* Replace the old @tailwind directives with the v4 import */
+@import "tailwindcss";
