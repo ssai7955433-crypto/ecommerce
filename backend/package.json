@@ -21,9 +21,10 @@
     "google-auth-library": "^11.1.0",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.9.3",
     "multer": "^2.3.0",
-    "nodemailer": "^10.0.10"
+    "mysql2": "^3.24.5",
+    "nodemailer": "^10.0.10",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

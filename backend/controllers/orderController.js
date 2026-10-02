@@ -92,8 +92,9 @@ export const createOrder = async (req, res) => {
 
       if (item.variantId) {
 
-        const variant =
-          product.variants.id(item.variantId);
+        const variant = product.variants.find(
+          (itemVariant) => itemVariant._id === item.variantId
+        );
 
         if (!variant) {
           return res.status(404).json({
@@ -276,7 +277,9 @@ export const updateOrderStatus = async (req, res) => {
         }
 
         if (item.variantId) {
-          const variant = product.variants.id(item.variantId);
+          const variant = product.variants.find(
+            (itemVariant) => itemVariant._id === item.variantId
+          );
 
           if (variant) {
             variant.stock += item.quantity;

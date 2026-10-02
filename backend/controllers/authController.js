@@ -189,7 +189,7 @@ export const registerUser = async (req, res) => {
 
     console.log("RAW VERIFICATION TOKEN:", rawToken);
 
-    // We store only the hashed version in MongoDB.
+    // Store only the hashed version in the database.
     const hashedToken = crypto
       .createHash("sha256")
       .update(rawToken)

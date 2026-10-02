@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
 import User from "../models/User.js";
 import Store from "../models/Store.js";
 import Product from "../models/Product.js";
 import Order from "../models/Order.js";
+import { isValidId, Op, sequelize } from "../models/index.js";
 
 
 
@@ -44,48 +44,28 @@ export const getAdminDashboard = async (req, res) => {
     // Only PAID orders
     // ------------------------------------------
 
-    const revenueResult = await Order.aggregate([
-      {
-        $match: {
+    const totalRevenue = Number(
+      (await Order.sum("totalAmount", {
+        where: {
           paymentStatus: "PAID",
-          status: {
-            $ne: "CANCELLED",
-          },
+          status: { [Op.ne]: "CANCELLED" },
         },
-      },
-
-      {
-        $group: {
-          _id: null,
-
-          totalRevenue: {
-            $sum: "$totalAmount",
-          },
-        },
-      },
-    ]);
-
-    const totalRevenue =
-      revenueResult.length > 0
-        ? revenueResult[0].totalRevenue
-        : 0;
+      })) || 0
+    );
 
 
     // ------------------------------------------
     // ORDER STATUS COUNTS
     // ------------------------------------------
 
-    const orderStatusResult = await Order.aggregate([
-      {
-        $group: {
-          _id: "$status",
-
-          count: {
-            $sum: 1,
-          },
-        },
-      },
-    ]);
+    const orderStatusResult = await Order.findAll({
+      attributes: [
+        "status",
+        [sequelize.fn("COUNT", sequelize.col("_id")), "count"],
+      ],
+      group: ["status"],
+      raw: true,
+    });
 
     const orderStats = {
       pending: 0,
@@ -96,13 +76,13 @@ export const getAdminDashboard = async (req, res) => {
     };
 
     orderStatusResult.forEach((item) => {
-      const status = item._id?.toLowerCase();
+      const status = item.status?.toLowerCase();
 
       if (
         status &&
         Object.prototype.hasOwnProperty.call(orderStats, status)
       ) {
-        orderStats[status] = item.count;
+        orderStats[status] = Number(item.count);
       }
     });
 
@@ -513,7 +493,7 @@ export const getAdminOrderById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!isValidId(id)) {
       return res.status(400).json({
         message: "Invalid order ID",
       });

@@ -1,18 +1,17 @@
-import mongoose from "mongoose";
+import { sequelize } from "../models/index.js";
 
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
-
-    if (!mongoUri) {
-      throw new Error("Set MONGO_URI or MONGODB_URI in the environment");
+    if (!process.env.MYSQL_URL && !process.env.DATABASE_URL) {
+      throw new Error("Set MYSQL_URL or DATABASE_URL in the environment");
     }
 
-    await mongoose.connect(mongoUri);
+    await sequelize.authenticate();
+    await sequelize.sync();
 
-    console.log("MongoDB connected successfully");
+    console.log("MySQL connected successfully");
   } catch (error) {
-    console.error("MongoDB connection failed:", error.message);
+    console.error("MySQL connection failed:", error.message);
     process.exit(1);
   }
 };

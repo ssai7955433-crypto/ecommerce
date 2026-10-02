@@ -4,7 +4,7 @@
 - Backend: https://shalini-kart.onrender.com
 
 The backend provides the multi-tenant store, product, account, and order APIs.
-MongoDB stores application data. Online payment is not configured; orders are
+MySQL stores application data. Online payment is not configured; orders are
 placed for the store to confirm and arrange payment.
 
 ## Deploy the backend on Render
@@ -13,10 +13,13 @@ placed for the store to confirm and arrange payment.
 - Build command: `npm install`
 - Start command: `npm start`
 
-Set these environment variables in Render:
+Create a MySQL database with a database provider, then set these environment
+variables in Render:
 
-- `MONGO_URI`: MongoDB Atlas connection string
+- `MYSQL_URL`: MySQL connection URL from the database provider
 - `JWT_SECRET`: a private random signing secret
 - `FRONTEND_URL`: `https://shalinikart.netlify.app`
+- `MYSQL_SSL`: set to `true` if the provider requires TLS
 
-The health endpoint is `GET /api/health`.
+The backend creates its tables on startup. The health endpoint is
+`GET /api/health`.

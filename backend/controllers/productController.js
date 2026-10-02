@@ -1,9 +1,8 @@
 
 
-import mongoose from "mongoose";
-
 import Store from "../models/Store.js";
 import Product from "../models/Product.js";
+import { isValidId } from "../models/index.js";
 import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 
@@ -163,7 +162,7 @@ export const getStoreProducts = async (req, res) => {
         const { storeId } = req.params;
 
         // Validate store ID
-        if (!mongoose.Types.ObjectId.isValid(storeId)) {
+        if (!isValidId(storeId)) {
             return res.status(400).json({
                 message: "Invalid store ID format"
             });
@@ -216,7 +215,7 @@ export const updateProduct = async (req, res) => {
         } = req.body;
 
         // 1. Validate product ID
-        if (!mongoose.Types.ObjectId.isValid(productId)) {
+        if (!isValidId(productId)) {
             return res.status(400).json({
                 message: "Invalid product ID format"
             });
@@ -324,7 +323,7 @@ export const deleteProduct = async (req, res) => {
         const { productId } = req.params;
 
         // 1. Validate product ID
-        if (!mongoose.Types.ObjectId.isValid(productId)) {
+        if (!isValidId(productId)) {
             return res.status(400).json({
                 message: "Invalid product ID format"
             });
@@ -380,7 +379,7 @@ export const getProductById = async (req, res) => {
         const { productId } = req.params;
 
         // Validate product ID
-        if (!mongoose.Types.ObjectId.isValid(productId)) {
+        if (!isValidId(productId)) {
             return res.status(400).json({
                 message: "Invalid product ID format"
             });
@@ -409,8 +408,6 @@ export const getProductById = async (req, res) => {
     }
 };
 
-
-// import mongoose from "mongoose";
 
 // import Store from "../models/Store.js"
 // import Product from "../models/Product.js"
@@ -716,12 +713,6 @@ export const getProductById = async (req, res) => {
 // export const getProductById = async (req, res) => {
 //   try{
 //     const {productId} = req.params;
-
-//     if (!mongoose.Types.ObjectId.isValid(productId)) {
-//       return res.status(400).json({
-//         message: "Invalid product ID format",
-//       });
-//     }
 
 //     const product = await Product.findById(productId);
 //     console.log(product);
