@@ -1,4 +1,4 @@
-# ShaliniKart E-Commerce
+# saikart E-Commerce
 
 - Frontend: https://shalinikart.netlify.app
 - Backend: https://shalini-kart.onrender.com
