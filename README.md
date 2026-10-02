@@ -1,7 +1,7 @@
 # saikart E-Commerce
 
-- Frontend: https://shalinikart.netlify.app
-- Backend: https://shalini-kart.onrender.com
+- Frontend: https://saikart.netlify.app
+- Backend: https://ecommerce-6-w8zx.onrender.com/api
 
 The backend provides the multi-tenant store, product, account, and order APIs.
 MySQL stores application data. Online payment is not configured; orders are
@@ -18,7 +18,7 @@ variables in Render:
 
 - `MYSQL_URL`: MySQL connection URL from the database provider
 - `JWT_SECRET`: a private random signing secret
-- `FRONTEND_URL`: `https://shalinikart.netlify.app`
+- `FRONTEND_URL`: `https://saikart.netlify.app/`
 - `MYSQL_SSL`: set to `true` if the provider requires TLS
 
 The backend creates its tables on startup. The health endpoint is
